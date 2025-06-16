@@ -1,4 +1,4 @@
-# 🌐 Mon Portfolio Web - Projet Final
+# 🌐 Mon Portfolio Web
 
 Ce projet est mon **site web personnel** réalisé dans le cadre de ma formation.  
 Il présente mes compétences, mes projets réalisés, mes services, ainsi que mes informations de contact.
