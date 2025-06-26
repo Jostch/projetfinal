@@ -365,6 +365,8 @@ span {
 
 
 
+/* Responsive pour le different device */
+
 /* Responsive Tablette (max-width: 900px) */
 @media (max-width: 900px) {
     .container-1 {
@@ -434,16 +436,31 @@ span {
 @media (max-width: 600px) {
     .titre {
         font-size: 1.1rem;
+        text-align: center;
     }
     .container-1 {
         padding: 8px 0;
+        flex-direction: column;
+        gap: 8px;
+        height: auto;
+    }
+    .navbar ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 0;
     }
     .navbar a {
         font-size: 0.95rem;
         padding: 8px;
+        display: block;
+        width: 100%;
+        text-align: center;
     }
     .container-2 {
         padding: 16px 4px;
+        flex-direction: column;
+        gap: 12px;
     }
     .text p {
         font-size: 1rem;
@@ -452,9 +469,13 @@ span {
         width: 100%;
         font-size: 1rem;
         padding: 0.6rem 1rem;
+        margin: 8px 0;
     }
     .image img {
         max-width: 160px;
+        width: 100%;
+        margin: 0 auto;
+        display: block;
     }
     .container-3 h1,
     .container-4 h1,
@@ -463,16 +484,27 @@ span {
         font-size: 1.1rem;
         margin-top: 20px;
         margin-bottom: 20px;
+        text-align: center;
+    }
+    .content-1,
+    .cards,
+    .cards-skills {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
     }
     .item-2 img {
         width: 120px;
         border-radius: 60px;
+        margin: 0 auto;
+        display: block;
     }
     .card-1, .card-2, .card-3,
     .card-soft-skills, .card-hard-skills {
         width: 98%;
         padding: 10px;
         font-size: 0.95rem;
+        margin: 8px 0;
     }
     .cards, .cards-skills {
         padding: 4px;
@@ -484,6 +516,7 @@ span {
     }
     .group-1, .group-2, .group-3 input {
         margin-right: 0;
+        width: 100%;
     }
     textarea {
         width: 100%;
@@ -492,5 +525,8 @@ span {
     .content-footer {
         padding: 10px;
         font-size: 0.9rem;
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
     }
 }
