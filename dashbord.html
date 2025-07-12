@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord - Portfolio Simba Joshua</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        /* Variables CSS pour le thème dashboard */
+        :root {
+            --dashboard-primary: #3C5E84;
+            --dashboard-secondary: #2EC9C4;
+            --dashboard-accent: #f39c12;
+            --dashboard-bg: #f8f9fa;
+            --dashboard-card: #ffffff;
+            --dashboard-text: #333333;
+            --dashboard-text-light: #666666;
+            --dashboard-border: #e9ecef;
+            --dashboard-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --dashboard-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.15);
+            --dashboard-radius: 12px;
+            --dashboard-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Mode sombre pour le dashboard */
+        [data-theme="dark"] {
+            --dashboard-bg: #1a1a1a;
+            --dashboard-card: #2d2d2d;
+            --dashboard-text: #ffffff;
+            --dashboard-text-light: #cccccc;
+            --dashboard-border: #404040;
+            --dashboard-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --dashboard-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            background: var(--dashboard-bg);
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dashboard-text);
+            transition: var(--dashboard-transition);
+        }
+
+        /* Header du dashboard */
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--dashboard-primary), var(--dashboard-secondary));
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--dashboard-shadow);
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dashboard-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: var(--dashboard-transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .back-to-portfolio {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--dashboard-radius);
+            transition: var(--dashboard-transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-to-portfolio:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .dashboard-layout {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--dashboard-card);
+            color: var(--dashboard-text);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--dashboard-shadow);
+            transition: var(--dashboard-transition);
+        }
+
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--dashboard-border);
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: var(--dashboard-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 0;
+        }
+
+        .sidebar a {
+            color: var(--dashboard-text);
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 1rem 2rem;
+            transition: var(--dashboard-transition);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar a:hover {
+            background: rgba(60, 94, 132, 0.1);
+            border-left-color: var(--dashboard-primary);
+            transform: translateX(5px);
+        }
+
+        .sidebar a.active {
+            background: linear-gradient(90deg, rgba(60, 94, 132, 0.1), transparent);
+            border-left-color: var(--dashboard-primary);
+            color: var(--dashboard-primary);
+            font-weight: 600;
+        }
+
+        .sidebar a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .dashboard-main {
+            flex: 1;
+            padding: 2rem;
+            background: var(--dashboard-bg);
+            overflow-y: auto;
+        }
+
+        .dashboard-container {
+            background: var(--dashboard-card);
+            border-radius: var(--dashboard-radius);
+            box-shadow: var(--dashboard-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: var(--dashboard-transition);
+        }
+
+        .dashboard-container:hover {
+            box-shadow: var(--dashboard-shadow-hover);
+        }
+
+        .dashboard-container h1 {
+            color: var(--dashboard-primary);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        /* Tableau des messages */
+        .messages-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: var(--dashboard-card);
+            border-radius: var(--dashboard-radius);
+            overflow: hidden;
+            box-shadow: var(--dashboard-shadow);
+        }
+
+        .messages-table th,
+        .messages-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--dashboard-border);
+        }
+
+        .messages-table th {
+            background: linear-gradient(135deg, var(--dashboard-primary), var(--dashboard-secondary));
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .messages-table tr:hover {
+            background: rgba(60, 94, 132, 0.05);
+        }
+
+        .messages-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .message-preview {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .message-full {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--dashboard-card);
+            padding: 2rem;
+            border-radius: var(--dashboard-radius);
+            box-shadow: var(--dashboard-shadow-hover);
+            max-width: 500px;
+            width: 90%;
+            z-index: 1000;
+        }
+
+        .message-full.show {
+            display: block;
+        }
+
+        .message-full h3 {
+            color: var(--dashboard-primary);
+            margin-bottom: 1rem;
+        }
+
+        .message-full .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dashboard-text-light);
+        }
+
+        /* Statistiques */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--dashboard-primary), var(--dashboard-secondary));
+            color: white;
+            padding: 2rem;
+            border-radius: var(--dashboard-radius);
+            text-align: center;
+            box-shadow: var(--dashboard-shadow);
+            transition: var(--dashboard-transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--dashboard-shadow-hover);
+        }
+
+        .stat-card.secondary {
+            background: linear-gradient(135deg, var(--dashboard-secondary), var(--dashboard-accent));
+        }
+
+        .stat-card.tertiary {
+            background: linear-gradient(135deg, var(--dashboard-accent), #e74c3c);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .chart-container {
+            background: var(--dashboard-card);
+            padding: 2rem;
+            border-radius: var(--dashboard-radius);
+            box-shadow: var(--dashboard-shadow);
+        }
+
+        /* Actions */
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--dashboard-card);
+            border: 1px solid var(--dashboard-border);
+            border-radius: var(--dashboard-radius);
+            padding: 0.5rem 1rem;
+            box-shadow: var(--dashboard-shadow);
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--dashboard-text);
+            margin-left: 0.5rem;
+            width: 200px;
+        }
+
+        .search-box input::placeholder {
+            color: var(--dashboard-text-light);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--dashboard-radius);
+            cursor: pointer;
+            transition: var(--dashboard-transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--dashboard-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--dashboard-secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--dashboard-secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: var(--dashboard-accent);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                padding: 1rem;
+            }
+
+            .sidebar-header {
+                border-bottom: none;
+                border-right: 1px solid var(--dashboard-border);
+                padding: 1rem;
+            }
+
+            .sidebar nav {
+                flex-direction: row;
+                padding: 0 1rem;
+            }
+
+            .sidebar a {
+                padding: 0.75rem 1rem;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+
+            .sidebar a:hover,
+            .sidebar a.active {
+                border-left: none;
+                border-bottom-color: var(--dashboard-primary);
+                transform: translateY(-2px);
+            }
+
+            .dashboard-main {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .dashboard-controls {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                flex-direction: column;
+                padding: 0.5rem;
+            }
+
+            .sidebar-header {
+                border-right: none;
+                border-bottom: 1px solid var(--dashboard-border);
+                padding: 0.5rem;
+            }
+
+            .sidebar nav {
+                flex-direction: column;
+                padding: 0.5rem;
+            }
+
+            .sidebar a {
+                justify-content: center;
+                border-bottom: none;
+                border-left: 3px solid transparent;
+            }
+
+            .sidebar a:hover,
+            .sidebar a.active {
+                border-bottom: none;
+                border-left-color: var(--dashboard-primary);
+                transform: translateX(5px);
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .action-buttons {
+                justify-content: center;
+            }
+
+            .messages-table {
+                font-size: 0.9rem;
+            }
+
+            .messages-table th,
+            .messages-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in {
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideIn 0.6s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Overlay pour les modales */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header du dashboard -->
+    <header class="dashboard-header">
+        <h1>
+            <i class="fas fa-tachometer-alt"></i>
+            Tableau de Bord
+        </h1>
+        <div class="dashboard-controls">
+            <button id="theme-toggle" class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <a href="index.html" class="back-to-portfolio">
+                <i class="fas fa-arrow-left"></i>
+                Retour au Portfolio
+            </a>
+        </div>
+    </header>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>
+                    <i class="fas fa-user-shield"></i>
+                    Administration
+                </h2>
+            </div>
+            <nav>
+                <a href="#" class="active" data-section="messages">
+                    <i class="fas fa-envelope"></i>
+                    Messages
+                </a>
+                <a href="#" data-section="stats">
+                    <i class="fas fa-chart-bar"></i>
+                    Statistiques
+                </a>
+                <a href="#" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    Paramètres
+                </a>
+                <a href="#" data-section="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Déconnexion
+                </a>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <!-- Section Messages -->
+            <div class="dashboard-container fade-in" id="messages-section">
+                <h1>
+                    <i class="fas fa-envelope"></i>
+                    Messages Reçus
+                </h1>
+                
+                <div class="actions-bar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-messages" placeholder="Rechercher dans les messages...">
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="export-btn">
+                            <i class="fas fa-file-pdf"></i>
+                            Exporter PDF
+                        </button>
+                        <button class="btn btn-danger" id="delete-all-btn">
+                            <i class="fas fa-trash"></i>
+                            Tout supprimer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="messages-table">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user"></i> Nom</th>
+                                <th><i class="fas fa-envelope"></i> Email</th>
+                                <th><i class="fas fa-comment"></i> Message</th>
+                                <th><i class="fas fa-calendar"></i> Date</th>
+                                <th><i class="fas fa-cogs"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messages-table">
+                            <!-- Les messages seront ajoutés ici par JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Section Statistiques -->
+            <div class="dashboard-container slide-in" id="stats-section" style="display:none;">
+                <h1>
+                    <i class="fas fa-chart-line"></i>
+                    Statistiques
+                </h1>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="stat-total">0</div>
+                        <div class="stat-label">Messages Reçus</div>
+                    </div>
+                    <div class="stat-card secondary">
+                        <div class="stat-number" id="stat-unique">0</div>
+                        <div class="stat-label">Contacts Uniques</div>
+                    </div>
+                    <div class="stat-card tertiary">
+                        <div class="stat-number" id="stat-this-month">0</div>
+                        <div class="stat-label">Ce Mois</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3 style="text-align: center; margin-bottom: 2rem; color: var(--dashboard-primary);">
+                        <i class="fas fa-chart-bar"></i>
+                        Évolution des Messages
+                    </h3>
+                    <canvas id="messagesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Section Paramètres -->
+            <div class="dashboard-container slide-in" id="settings-section" style="display:none;">
+                <h1>
+                    <i class="fas fa-cog"></i>
+                    Paramètres
+                </h1>
+                
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <div style="background: var(--dashboard-card); padding: 2rem; border-radius: var(--dashboard-radius); margin-bottom: 2rem;">
+                        <h3 style="color: var(--dashboard-primary); margin-bottom: 1rem;">
+                            <i class="fas fa-bell"></i>
+                            Notifications
+                        </h3>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                            <input type="checkbox" checked>
+                            Recevoir des notifications par email
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked>
+                            Notifications de nouveaux messages
+                        </label>
+                    </div>
+                    
+                    <div style="background: var(--dashboard-card); padding: 2rem; border-radius: var(--dashboard-radius);">
+                        <h3 style="color: var(--dashboard-primary); margin-bottom: 1rem;">
+                            <i class="fas fa-palette"></i>
+                            Apparence
+                        </h3>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="auto-theme">
+                            Thème automatique selon l'heure
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal pour afficher le message complet -->
+    <div class="overlay" id="message-overlay"></div>
+    <div class="message-full" id="message-modal">
+        <button class="close-btn" onclick="closeMessageModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        <h3 id="modal-title">Détails du Message</h3>
+        <div id="modal-content"></div>
+    </div>
+
+    <script>
+        // Gestion du thème
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('i');
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        // Données simulées
+        const messages = [
+            { 
+                id: 1,
+                nom: "Alice Martin", 
+                email: "alice.martin@email.com", 
+                message: "Bonjour Joshua ! J'ai découvert votre portfolio et je suis vraiment impressionné par votre travail. Votre approche du design et votre maîtrise des technologies web sont remarquables. J'aimerais discuter d'une possible collaboration sur un projet e-commerce.", 
+                date: "2025-01-28",
+                sujet: "Collaboration projet e-commerce"
+            },
+            { 
+                id: 2,
+                nom: "Bob Dubois", 
+                email: "bob.dubois@startup.com", 
+                message: "Salut ! Je suis le fondateur d'une startup tech et nous cherchons un développeur front-end talentueux. Votre profil correspond parfaitement à nos besoins. Pouvez-vous me recontacter pour en discuter ?", 
+                date: "2025-01-27",
+                sujet: "Opportunité de développement"
+            },
+            { 
+                id: 3,
+                nom: "Claire Bernard", 
+                email: "claire.bernard@design.com", 
+                message: "Coucou ! Je suis designer UX/UI et j'adorerais collaborer avec vous sur un projet. Votre sens du design et votre code sont vraiment au top !", 
+                date: "2025-01-29",
+                sujet: "Collaboration design"
+            },
+            { 
+                id: 4,
+                nom: "David Moreau", 
+                email: "david.moreau@agency.com", 
+                message: "Bonjour, je représente une agence web et nous cherchons à recruter des développeurs. Votre portfolio montre un excellent niveau technique. Intéressé par un entretien ?", 
+                date: "2025-01-26",
+                sujet: "Recrutement développeur"
+            }
+        ];
+
+        // Affichage des messages
+        function displayMessages(messagesToShow = messages) {
+            const tbody = document.getElementById('messages-table');
+            tbody.innerHTML = '';
+
+            messagesToShow.forEach(msg => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${msg.nom}</strong></td>
+                    <td>${msg.email}</td>
+                    <td>
+                        <div class="message-preview" onclick="showFullMessage(${msg.id})">
+                            ${msg.message.substring(0, 100)}${msg.message.length > 100 ? '...' : ''}
+                        </div>
+                    </td>
+                    <td>${formatDate(msg.date)}</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="showFullMessage(${msg.id})" style="padding: 0.5rem; font-size: 0.8rem;">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteMessage(${msg.id})" style="padding: 0.5rem; font-size: 0.8rem;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Formatage de la date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Affichage du message complet
+        function showFullMessage(messageId) {
+            const message = messages.find(m => m.id === messageId);
+            if (!message) return;
+
+            document.getElementById('modal-title').textContent = `Message de ${message.nom}`;
+            document.getElementById('modal-content').innerHTML = `
+                <div style="margin-bottom: 1rem;">
+                    <strong>De :</strong> ${message.nom} (${message.email})
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <strong>Sujet :</strong> ${message.sujet}
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <strong>Date :</strong> ${formatDate(message.date)}
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <strong>Message :</strong>
+                </div>
+                <div style="background: var(--dashboard-bg); padding: 1rem; border-radius: var(--dashboard-radius); line-height: 1.6;">
+                    ${message.message}
+                </div>
+            `;
+
+            document.getElementById('message-overlay').classList.add('show');
+            document.getElementById('message-modal').classList.add('show');
+        }
+
+        // Fermeture de la modal
+        function closeMessageModal() {
+            document.getElementById('message-overlay').classList.remove('show');
+            document.getElementById('message-modal').classList.remove('show');
+        }
+
+        // Fermeture en cliquant sur l'overlay
+        document.getElementById('message-overlay').addEventListener('click', closeMessageModal);
+
+        // Suppression d'un message
+        function deleteMessage(messageId) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer ce message ?')) {
+                const index = messages.findIndex(m => m.id === messageId);
+                if (index > -1) {
+                    messages.splice(index, 1);
+                    displayMessages();
+                    updateStats();
+                    updateChart();
+                }
+            }
+        }
+
+        // Recherche de messages
+        document.getElementById('search-messages').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredMessages = messages.filter(msg => 
+                msg.nom.toLowerCase().includes(searchTerm) ||
+                msg.email.toLowerCase().includes(searchTerm) ||
+                msg.message.toLowerCase().includes(searchTerm) ||
+                msg.sujet.toLowerCase().includes(searchTerm)
+            );
+            displayMessages(filteredMessages);
+        });
+
+        // Mise à jour des statistiques
+        function updateStats() {
+            document.getElementById('stat-total').textContent = messages.length;
+            
+            const uniqueEmails = new Set(messages.map(m => m.email));
+            document.getElementById('stat-unique').textContent = uniqueEmails.size;
+            
+            const thisMonth = new Date().getMonth();
+            const thisYear = new Date().getFullYear();
+            const thisMonthMessages = messages.filter(msg => {
+                const msgDate = new Date(msg.date);
+                return msgDate.getMonth() === thisMonth && msgDate.getFullYear() === thisYear;
+            });
+            document.getElementById('stat-this-month').textContent = thisMonthMessages.length;
+        }
+
+        // Mise à jour du graphique
+        function updateChart() {
+            const dateCounts = {};
+            messages.forEach(msg => {
+                const date = msg.date.split('T')[0];
+                dateCounts[date] = (dateCounts[date] || 0) + 1;
+            });
+
+            const chartLabels = Object.keys(dateCounts).sort();
+            const chartData = chartLabels.map(date => dateCounts[date]);
+
+            if (window.messagesChart) {
+                window.messagesChart.destroy();
+            }
+
+            const ctx = document.getElementById('messagesChart').getContext('2d');
+            window.messagesChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartLabels.map(date => formatDate(date)),
+                    datasets: [{
+                        label: 'Messages reçus',
+                        data: chartData,
+                        backgroundColor: 'rgba(60, 94, 132, 0.2)',
+                        borderColor: '#3C5E84',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointBackgroundColor: '#3C5E84',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { 
+                            display: false 
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            ticks: { 
+                                stepSize: 1,
+                                color: getComputedStyle(document.body).getPropertyValue('--dashboard-text')
+                            },
+                            grid: {
+                                color: getComputedStyle(document.body).getPropertyValue('--dashboard-border')
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: getComputedStyle(document.body).getPropertyValue('--dashboard-text')
+                            },
+                            grid: {
+                                color: getComputedStyle(document.body).getPropertyValue('--dashboard-border')
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Navigation entre les sections
+        const navLinks = document.querySelectorAll('.sidebar nav a');
+        const sections = ['messages', 'stats', 'settings'];
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.getAttribute('data-section');
+                
+                if (section === 'logout') {
+                    if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                        window.location.href = 'index.html';
+                    }
+                    return;
+                }
+
+                // Mise à jour des liens actifs
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+
+                // Affichage des sections
+                sections.forEach(s => {
+                    const sectionElement = document.getElementById(s + '-section');
+                    if (sectionElement) {
+                        sectionElement.style.display = s === section ? 'block' : 'none';
+                    }
+                });
+
+                // Mise à jour du graphique si on va sur les stats
+                if (section === 'stats') {
+                    setTimeout(updateChart, 100);
+                }
+            });
+        });
+
+        // Actions des boutons
+        // Fonction d'export PDF avec en-tête professionnelle
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Configuration des couleurs
+            const primaryColor = [60, 94, 132]; // #3C5E84
+            const secondaryColor = [46, 201, 196]; // #2EC9C4
+            const textColor = [51, 51, 51];
+            
+            // En-tête du PDF
+            doc.setFillColor(...primaryColor);
+            doc.rect(0, 0, 210, 40, 'F');
+            
+            // Logo/Titre principal
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(24);
+            doc.setFont('helvetica', 'bold');
+            doc.text('PORTFOLIO SIMBA JOSHUA', 105, 15, { align: 'center' });
+            
+            // Sous-titre
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Tableau de Bord - Messages Reçus', 105, 25, { align: 'center' });
+            
+            // Informations de génération
+            doc.setFontSize(10);
+            doc.text(`Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}`, 105, 35, { align: 'center' });
+            
+            // Statistiques en haut
+            doc.setTextColor(...textColor);
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Statistiques', 20, 55);
+            
+            // Cartes de statistiques
+            const stats = [
+                { label: 'Total Messages', value: messages.length, color: primaryColor },
+                { label: 'Contacts Uniques', value: new Set(messages.map(m => m.email)).size, color: secondaryColor },
+                { label: 'Ce Mois', value: messages.filter(msg => {
+                    const msgDate = new Date(msg.date);
+                    const now = new Date();
+                    return msgDate.getMonth() === now.getMonth() && msgDate.getFullYear() === now.getFullYear();
+                }).length, color: [243, 156, 18] }
+            ];
+            
+            let xPos = 20;
+            stats.forEach((stat, index) => {
+                // Fond de la carte
+                doc.setFillColor(...stat.color);
+                doc.rect(xPos, 60, 50, 25, 'F');
+                
+                // Texte blanc
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(16);
+                doc.setFont('helvetica', 'bold');
+                doc.text(stat.value.toString(), xPos + 25, 70, { align: 'center' });
+                
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'normal');
+                doc.text(stat.label, xPos + 25, 80, { align: 'center' });
+                
+                xPos += 60;
+            });
+            
+            // Tableau des messages
+            doc.setTextColor(...textColor);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Messages Reçus', 20, 100);
+            
+            // Préparation des données pour le tableau
+            const tableData = messages.map(msg => [
+                msg.nom,
+                msg.email,
+                msg.sujet,
+                formatDate(msg.date),
+                msg.message.length > 50 ? msg.message.substring(0, 50) + '...' : msg.message
+            ]);
+            
+            // En-têtes du tableau
+            const headers = ['Nom', 'Email', 'Sujet', 'Date', 'Message'];
+            
+            // Génération du tableau avec jsPDF-AutoTable
+            doc.autoTable({
+                head: [headers],
+                body: tableData,
+                startY: 110,
+                styles: {
+                    fontSize: 8,
+                    cellPadding: 3,
+                    overflow: 'linebreak',
+                    cellWidth: 'auto'
+                },
+                headStyles: {
+                    fillColor: primaryColor,
+                    textColor: [255, 255, 255],
+                    fontStyle: 'bold'
+                },
+                alternateRowStyles: {
+                    fillColor: [248, 249, 250]
+                },
+                columnStyles: {
+                    0: { cellWidth: 30 }, // Nom
+                    1: { cellWidth: 40 }, // Email
+                    2: { cellWidth: 35 }, // Sujet
+                    3: { cellWidth: 25 }, // Date
+                    4: { cellWidth: 60 }  // Message
+                },
+                margin: { top: 10, right: 20, bottom: 20, left: 20 }
+            });
+            
+            // Pied de page
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                
+                // Ligne de séparation
+                doc.setDrawColor(...primaryColor);
+                doc.setLineWidth(0.5);
+                doc.line(20, doc.internal.pageSize.height - 20, 190, doc.internal.pageSize.height - 20);
+                
+                // Informations de page
+                doc.setTextColor(...textColor);
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Page ${i} sur ${pageCount}`, 105, doc.internal.pageSize.height - 10, { align: 'center' });
+                doc.text('Portfolio Simba Joshua - Tableau de Bord', 20, doc.internal.pageSize.height - 10);
+                doc.text('www.simba-joshua.com', 190, doc.internal.pageSize.height - 10, { align: 'right' });
+            }
+            
+            // Sauvegarde du PDF
+            const fileName = `messages_portfolio_${new Date().toISOString().split('T')[0]}.pdf`;
+            doc.save(fileName);
+        }
+
+        document.getElementById('export-btn').addEventListener('click', exportToPDF);
+
+        document.getElementById('delete-all-btn').addEventListener('click', function() {
+            if (confirm('Êtes-vous sûr de vouloir supprimer tous les messages ? Cette action est irréversible.')) {
+                messages.length = 0;
+                displayMessages();
+                updateStats();
+                updateChart();
+            }
+        });
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            displayMessages();
+            updateStats();
+            
+            // Animation d'entrée
+            document.querySelectorAll('.fade-in, .slide-in').forEach(el => {
+                el.style.animationDelay = '0.2s';
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
-    <title>Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Portfolio - Simba Joshua</title>
 </head>
 
 <body class="scroll-animate">
@@ -13,158 +14,276 @@
         <h1 class="titre">SIMBA <span>JOSHUA</span></h1>
         <nav class="navbar">
             <ul>
-                <a href="#accueil">Accueil</a>
-                <a href="#a-propos">À propos</a>
-                <a href="#competences">Compétences</a>
-                <a href="#hobbies">Hobbies</a>
-                <a href="#contact">Contact</a>
-                <a href="#projets">Projets</a>
-                <a href="#activites">Activités</a>
+                <li><a href="#accueil"><i class="fas fa-home"></i> Accueil</a></li>
+                <li><a href="#a-propos"><i class="fas fa-user"></i> À propos</a></li>
+                <li><a href="#competences"><i class="fas fa-code"></i> Compétences</a></li>
+                <li><a href="#hobbies"><i class="fas fa-heart"></i> Hobbies</a></li>
+                <li><a href="#projets"><i class="fas fa-project-diagram"></i> Projets</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
             </ul>
         </nav>
+        <button id="theme-toggle" class="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
     </header>
+    
     <div class="container-2" id="a-propos">
         <div class="content">
             <div class="text">
                 <p>
-                    Je suis <span>Joshua</span>, developpeur en devenir<br> passionne par le web et le design !
+                    Je suis <span>Joshua</span>, développeur en devenir<br> passionné par le web et le design !
                 </p>
-                <button type="button">Voir mes projets</button>
+                <button type="button" class="cta-button">
+                    <i class="fas fa-rocket"></i> Voir mes projets
+                </button>
             </div>
         </div>
         <div class="image">
-            <img src="img/travail-2.jpg" alt="">
+            <img src="img/travail-2.jpg" alt="Joshua Simba - Développeur web" loading="lazy">
         </div>
     </div>
+    
     <div class="container-3">
         <h1>À propos</h1>
         <div class="content-1">
             <div class="item-1">
                 <p>
-                    Je m'appelle <span> Simba Joshua</span>,passioner par <br>
-                    la creation de site web moderne et interactifs
+                    Je m'appelle <span>Simba Joshua</span>, passionné par <br>
+                    la création de sites web modernes et interactifs
                 </p>
                 <p>
-                    Je suis actuellement etudiant en developpement web,<br>
-                    et je cherche a ameliorer mes competences en Javascript, HTML et CSS.
+                    Je suis actuellement étudiant en développement web,<br>
+                    et je cherche à améliorer mes compétences en JavaScript, HTML et CSS.
                 </p>
                 <p>
-                    J'adore transformer mes idees en projet concrets <br>
-                    et experimenter avec nouvelles technologies
+                    J'adore transformer mes idées en projets concrets <br>
+                    et expérimenter avec de nouvelles technologies
                 </p>
-                <a href="cv.pdf" class="btn-download" download>Télécharger mon CV</a>
+                <a href="cv.pdf" class="btn-download" download>
+                    <i class="fas fa-download"></i> Télécharger mon CV
+                </a>
             </div>
             <div class="item-2">
-                <img src="img/profil.jpg" alt="">
+                <img src="img/profil.jpg" alt="Photo de profil de Joshua" loading="lazy">
             </div>
-
         </div>
     </div>
+    
     <div class="container-4" id="projets">
         <h1>Mes Projets</h1>
+        <div class="project-filters">
+            <button class="filter-btn active" data-filter="all">Tous</button>
+            <button class="filter-btn" data-filter="web">Web</button>
+            <button class="filter-btn" data-filter="game">Jeux</button>
+            <button class="filter-btn" data-filter="app">Applications</button>
+        </div>
         <div class="cards">
-            <div class="card-1">
-                <p>
-                    Un min-jeu interactif en Javascript qui utilise des evenemmeents DOM
-                </p>
-                <div>
+            <div class="card-1 project-card" data-category="game">
+                <div class="card-image">
+                    <img src="img/travail-1.jpg" alt="Mini-jeu interactif" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3>Mini-jeu Interactif</h3>
                     <p>
-                        #HTML, #CSS, #JavaScript
+                        Un mini-jeu interactif en JavaScript qui utilise des événements DOM
                     </p>
-                    <a href="" class="btn-project">Voir</a>
+                    <div class="card-tags">
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
+                        <span class="tag">JavaScript</span>
+                    </div>
+                    <a href="#" class="btn-project">
+                        <i class="fas fa-external-link-alt"></i> Voir le projet
+                    </a>
                 </div>
             </div>
-            <div class="card-2">
-                <p>
-                    Un min-jeu interactif en Javascript qui utilise des evenemmeents DOM
-                </p>
-                <div>
+            <div class="card-2 project-card" data-category="web">
+                <div class="card-image">
+                    <img src="img/travail-2.jpg" alt="Site web moderne" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3>Site Web Moderne</h3>
                     <p>
-                        #HTML, #CSS, #JavaScript
+                        Un site web responsive avec design moderne et animations fluides
                     </p>
-                    <a href="" class="btn-project">Voir</a>
+                    <div class="card-tags">
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
+                        <span class="tag">JavaScript</span>
+                    </div>
+                    <a href="#" class="btn-project">
+                        <i class="fas fa-external-link-alt"></i> Voir le projet
+                    </a>
                 </div>
             </div>
-            <div class="card-3">
-                <p>
-                    Un min-jeu interactif en Javascript qui utilise des evenemmeents DOM
-                </p>
-                <div>
+            <div class="card-3 project-card" data-category="app">
+                <div class="card-image">
+                    <img src="img/travail-3.jpg" alt="Application web" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3>Application Web</h3>
                     <p>
-                        #HTML, #CSS, #JavaScript
+                        Une application web complète avec gestion d'état et API
                     </p>
-                    <a href="" class="btn-project">Voir</a>
+                    <div class="card-tags">
+                        <span class="tag">React</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">MongoDB</span>
+                    </div>
+                    <a href="#" class="btn-project">
+                        <i class="fas fa-external-link-alt"></i> Voir le projet
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+    
     <div class="container-5" id="competences">
-        <h1>Mes Competences</h1>
+        <h1>Mes Compétences</h1>
         <div class="cards-skills">
             <div class="card-soft-skills">
-                <h2>Soft Skills</h2>
-                <p><span>Gestion de projet</span></p>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 80%;"></div>
+                <h2><i class="fas fa-brain"></i> Soft Skills</h2>
+                <div class="skill-item">
+                    <p><span>Gestion de projet</span></p>
+                    <div class="progress-bar">
+                        <div class="progress" data-width="80"></div>
+                    </div>
                 </div>
-                <p><span>Resolution de probleme</span></p>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 70%;"></div>
+                <div class="skill-item">
+                    <p><span>Résolution de problème</span></p>
+                    <div class="progress-bar">
+                        <div class="progress" data-width="70"></div>
+                    </div>
                 </div>
-                <p><span>Adaptabilite</span></p>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 60%;"></div>
+                <div class="skill-item">
+                    <p><span>Adaptabilité</span></p>
+                    <div class="progress-bar">
+                        <div class="progress" data-width="60"></div>
+                    </div>
                 </div>
             </div>
             <div class="card-hard-skills">
-                <h2>Hard Skills</h2>
-                <p><span>HTML</span></p>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 90%;"></div>
+                <h2><i class="fas fa-laptop-code"></i> Hard Skills</h2>
+                <div class="skill-item">
+                    <p><span>HTML</span></p>
+                    <div class="progress-bar">
+                        <div class="progress" data-width="90"></div>
+                    </div>
                 </div>
-                <p><span>CSS</span></p>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 80%;"></div>
+                <div class="skill-item">
+                    <p><span>CSS</span></p>
+                    <div class="progress-bar">
+                        <div class="progress" data-width="80"></div>
+                    </div>
                 </div>
-                <p><span>Javascript</span></p>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 65%;"></div>
+                <div class="skill-item">
+                    <p><span>JavaScript</span></p>
+                    <div class="progress-bar">
+                        <div class="progress" data-width="65"></div>
+                    </div>
                 </div>
-                <p><span>VSCode</span></p>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 85%;"></div>
+                <div class="skill-item">
+                    <p><span>VSCode</span></p>
+                    <div class="progress-bar">
+                        <div class="progress" data-width="85"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <div class="container-hobbies" id="hobbies">
+        <h1>Mes Hobbies</h1>
+        <div class="hobbies-grid">
+            <div class="hobby-card">
+                <i class="fas fa-gamepad"></i>
+                <h3>Gaming</h3>
+                <p>Passionné de jeux vidéo, particulièrement les jeux de stratégie et d'aventure</p>
+            </div>
+            <div class="hobby-card">
+                <i class="fas fa-music"></i>
+                <h3>Musique</h3>
+                <p>Écoute de musique variée et apprentissage de nouveaux instruments</p>
+            </div>
+            <div class="hobby-card">
+                <i class="fas fa-book"></i>
+                <h3>Lecture</h3>
+                <p>Lecture de livres techniques et de science-fiction</p>
+            </div>
+            <div class="hobby-card">
+                <i class="fas fa-dumbbell"></i>
+                <h3>Sport</h3>
+                <p>Fitness et activités sportives pour maintenir un équilibre de vie</p>
+            </div>
+        </div>
+    </div>
+    
     <div class="container-6" id="contact">
-        <h1>Vous avez un projet en tete ?<br> N'hesitez pas a me contacter</h1>
+        <h1>Vous avez un projet en tête ?<br> N'hésitez pas à me contacter</h1>
         <div class="contact">
-            <form action="" method="post">
+            <form id="contact-form" action="" method="post">
                 <div class="form-input">
                     <div class="group-1">
-                        <label for="name">Votre Nom</label>
+                        <label for="name">Votre Nom *</label>
                         <input type="text" id="name" name="name" required>
+                        <span class="error-message"></span>
                     </div>
                     <div class="group-2">
-                        <label for="prenom">Votre Prenom</label>
+                        <label for="prenom">Votre Prénom *</label>
                         <input type="text" id="prenom" name="prenom" required>
+                        <span class="error-message"></span>
                     </div>
                 </div>
                 <div class="group-3">
-                    <label for="prenom">Votre Sujet</label>
-                    <input type="text" id="prenom" name="prenom" required>
+                    <label for="email">Votre Email *</label>
+                    <input type="email" id="email" name="email" required>
+                    <span class="error-message"></span>
                 </div>
-                <textarea id="message" rows="10" cols="50" name="message" required></textarea>
-                <button type="submit">Envoyer</button>
+                <div class="group-4">
+                    <label for="sujet">Votre Sujet *</label>
+                    <input type="text" id="sujet" name="sujet" required>
+                    <span class="error-message"></span>
+                </div>
+                <div class="group-5">
+                    <label for="message">Votre Message *</label>
+                    <textarea id="message" rows="10" cols="50" name="message" required></textarea>
+                    <span class="error-message"></span>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Envoyer
+                </button>
             </form>
         </div>
     </div>
-    <footer class="container-7" >
+    
+    <footer class="container-7">
         <div class="content-footer">
-            <p>Design by Simba Joshua with HTML CSS JS</p>
-            <p>Tous droits reserves 2025</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Simba Joshua</h3>
+                    <p>Développeur web passionné</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> contact@simba-joshua.com</p>
+                    <p><i class="fas fa-phone"></i> +33 6 XX XX XX XX</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Suivez-moi</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Design by Simba Joshua with HTML CSS JS</p>
+                <p>Tous droits réservés 2025</p>
+            </div>
         </div>
+    </footer>
+    
     <script src="js/script.js"></script>
 </body>
 
